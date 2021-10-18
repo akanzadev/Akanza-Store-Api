@@ -1,30 +1,30 @@
-const boom = require('@hapi/boom');
+const boom = require('@hapi/boom')
 
 class UserService {
-  constructor() {}
+  constructor () {}
 
-  async create(data) {
-    return data;
+  async create (data) {
+    return data
   }
 
-  async find() {
-    return [];
+  async find () {
+    return []
   }
 
-  async findOne(id) {
-    return { id };
+  async findOne (id) {
+    return { id }
   }
 
-  async update(id, changes) {
+  async update (id, changes) {
     return {
       id,
-      changes,
-    };
+      changes
+    }
   }
 
-  async delete(id) {
-    return { id };
+  async delete (id) {
+    return { id }
   }
 }
 
-module.exports = UserService;
+module.exports = UserService
