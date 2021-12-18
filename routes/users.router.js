@@ -1,19 +1,19 @@
 const express = require('express')
 
 const UserService = require('./../services/user.service')
-const validationHandler = require('./../middlewares/validator.handler')
+const validationHandler = require('../middlewares/validation.handler')
 const {
   updateUserSchema,
-  getUserSchema,
+  idProductSchema,
   createUserSchema
-} = require('../schemas')
+} = require('../utils/schemas')
 
 const router = express.Router()
 const service = new UserService()
 
 router.get('/', async (req, res, next) => {
   try {
-    const categories = await service.find()
+    const categories = await service.listUsers()
     res.json(categories)
   } catch (error) {
     next(error)
@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
 
 router.get(
   '/:id',
-  validationHandler(getUserSchema, 'params'),
+  validationHandler(idProductSchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params
@@ -50,7 +50,7 @@ router.post(
 
 router.patch(
   '/:id',
-  validationHandler(getUserSchema, 'params'),
+  validationHandler(idProductSchema, 'params'),
   validationHandler(updateUserSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -66,7 +66,7 @@ router.patch(
 
 router.delete(
   '/:id',
-  validationHandler(getUserSchema, 'params'),
+  validationHandler(idProductSchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params

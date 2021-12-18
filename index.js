@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const routerApi = require('./routes')
-
+const config = require('./config/config')
 const {
   logErrors,
   errorHandler,
@@ -29,16 +29,13 @@ app.get('/', (req, res) => {
   res.send('Hola mi server en express')
 })
 
-app.get('/nueva-ruta', (req, res) => {
-  res.send('Hola, soy una nueva ruta')
-})
-
+// Set Routes
 routerApi(app)
 
 app.use(logErrors)
 app.use(boomErrorHandler)
 app.use(errorHandler)
 
-app.listen(port, () => {
-  console.log('Mi port' + port)
+app.listen(config.SERVER.PORT, () => {
+  console.log('Running in Port: ' + port)
 })

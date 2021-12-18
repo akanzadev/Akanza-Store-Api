@@ -1,12 +1,12 @@
 const express = require('express')
 
 const CategoryService = require('./../services/category.service')
-const validationHandler = require('./../middlewares/validator.handler')
+const validationHandler = require('../middlewares/validation.handler')
 const {
   createCategorySchema,
-  getCategorySchema,
+  idCategorySchema,
   updateCategorySchema
-} = require('../schemas')
+} = require('../utils/schemas')
 
 const router = express.Router()
 const service = new CategoryService()
@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
 
 router.get(
   '/:id',
-  validationHandler(getCategorySchema, 'params'),
+  validationHandler(idCategorySchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params
@@ -50,7 +50,7 @@ router.post(
 
 router.patch(
   '/:id',
-  validationHandler(getCategorySchema, 'params'),
+  validationHandler(idCategorySchema, 'params'),
   validationHandler(updateCategorySchema, 'body'),
   async (req, res, next) => {
     try {
@@ -66,7 +66,7 @@ router.patch(
 
 router.delete(
   '/:id',
-  validationHandler(getCategorySchema, 'params'),
+  validationHandler(idCategorySchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params
