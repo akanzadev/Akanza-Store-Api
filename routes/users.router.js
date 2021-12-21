@@ -4,8 +4,8 @@ const UserService = require('./../services/user.service')
 const validationHandler = require('../middlewares/validation.handler')
 const {
   updateUserSchema,
-  idProductSchema,
-  createUserSchema
+  createUserSchema,
+  idUserSchema
 } = require('../utils/schemas')
 
 const router = express.Router()
@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
 
 router.get(
   '/:id',
-  validationHandler(idProductSchema, 'params'),
+  validationHandler(idUserSchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params
@@ -43,6 +43,7 @@ router.post(
       const newCategory = await service.create(body)
       res.status(201).json(newCategory)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
@@ -50,11 +51,12 @@ router.post(
 
 router.patch(
   '/:id',
-  validationHandler(idProductSchema, 'params'),
+  validationHandler(idUserSchema, 'params'),
   validationHandler(updateUserSchema, 'body'),
   async (req, res, next) => {
     try {
       const { id } = req.params
+      console.log(id)
       const body = req.body
       const category = await service.update(id, body)
       res.json(category)
@@ -66,7 +68,7 @@ router.patch(
 
 router.delete(
   '/:id',
-  validationHandler(idProductSchema, 'params'),
+  validationHandler(idUserSchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params

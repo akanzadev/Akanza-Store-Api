@@ -5,7 +5,8 @@ const config = require('./config/config')
 const {
   logErrors,
   errorHandler,
-  boomErrorHandler
+  boomErrorHandler,
+  queryErrorHandler
 } = require('./middlewares/error.handler')
 
 const app = express()
@@ -32,7 +33,9 @@ app.get('/', (req, res) => {
 // Set Routes
 routerApi(app)
 
+// Error Handler
 app.use(logErrors)
+app.use(queryErrorHandler)
 app.use(boomErrorHandler)
 app.use(errorHandler)
 

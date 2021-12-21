@@ -4,7 +4,16 @@ function logErrors (err, req, res, next) {
   }
   next(err)
 }
-
+function queryErrorHandler (err, req, res, next) {
+  if (err.parent) {
+    const { fields, parent } = err
+    return res.status(500).json({
+      field: fields,
+      message: parent.detail
+    })
+  }
+  next(err)
+}
 function errorHandler (err, req, res, next) {
   res.status(500).json({
     message: err.message,
@@ -19,4 +28,4 @@ function boomErrorHandler (err, req, res, next) {
   next(err)
 }
 
-module.exports = { logErrors, errorHandler, boomErrorHandler }
+module.exports = { logErrors, errorHandler, boomErrorHandler, queryErrorHandler }
