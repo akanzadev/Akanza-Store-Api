@@ -17,9 +17,9 @@ module.exports = getConnection; */
 const { Pool: PostgresClient } = require('pg')
 const config = require('../../config/config')
 
-const USER = encodeURIComponent(config.DB.DB_USER)
-const PASSWORD = encodeURIComponent(config.DB.DB_PASS)
-const URI = `postgres://${USER}:${PASSWORD}@${config.DB.DB_HOST}:${config.DB.DB_PORT}/${config.DB.DB_NAME}`
+const USER = encodeURIComponent(config.DB.POSTGRES.DB_USER)
+const PASSWORD = encodeURIComponent(config.DB.POSTGRES.DB_PASS)
+const URI = `postgres://${USER}:${PASSWORD}@${config.DB.DB_HOST}:${config.DB.POSTGRES.DB_PORT}/${config.DB.POSTGRES.DB_NAME}`
 
 class Postgres {
   /**
@@ -44,7 +44,7 @@ class Postgres {
       }
       return Postgres.connection
     } catch (error) {
-      console.log(error)
+      console.log('Error connecting to database: ', error)
     }
   }
 
@@ -58,7 +58,7 @@ class Postgres {
       const db = await this.connect()
       return await db.query(request)
     } catch (error) {
-      console.log(error)
+      console.log('Error query: ', error)
     }
   }
 }

@@ -7,11 +7,21 @@ const config = {
     MODE: process.env.NODE_ENV || 'development'
   },
   DB: {
-    DB_HOST: process.env.DB_HOST || 'localhost',
-    DB_PORT: process.env.DB_PORT || 5432,
-    DB_NAME: process.env.DB_NAME || 'my_store',
-    DB_USER: process.env.DB_USER || 'root',
-    DB_PASS: process.env.DB_PASS || 'admin'
+    TYPE_DB: process.env.TYPE_DB || 'postgres',
+    MYSQL: {
+      DB_HOST: process.env.DB_HOST || 'localhost',
+      DB_PORT: process.env.DB_PORT || 7800,
+      DB_NAME: process.env.DB_NAME || 'my_store',
+      DB_USER: process.env.DB_USER || 'root',
+      DB_PASS: process.env.DB_PASS || 'admin'
+    },
+    POSTGRES: {
+      DB_HOST: process.env.DB_HOST || 'localhost',
+      DB_PORT: process.env.DB_PORT || 5432,
+      DB_NAME: process.env.DB_NAME || 'my_store',
+      DB_USER: process.env.DB_USER || 'root',
+      DB_PASS: process.env.DB_PASS || 'admin'
+    }
   },
   JWT: {
     TOKEN_SECRET: process.env.TOKEN_SECRET || 'dev',

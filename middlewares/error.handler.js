@@ -1,3 +1,5 @@
+const { ValidationError } = require('sequelize')
+
 function logErrors (err, req, res, next) {
   if (process.env.MODE === 'development') {
     console.error('Log Error', err)
@@ -5,7 +7,7 @@ function logErrors (err, req, res, next) {
   next(err)
 }
 function queryErrorHandler (err, req, res, next) {
-  if (err.parent) {
+  if (err instanceof ValidationError) {
     const { fields, parent } = err
     return res.status(500).json({
       field: fields,

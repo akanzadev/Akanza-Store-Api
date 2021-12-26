@@ -200,4 +200,5 @@ $RECYCLE.BIN/
 
 
 # Persistent Docker containers
-data/
+postgres_data/
+mysql_data/
