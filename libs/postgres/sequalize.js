@@ -6,18 +6,18 @@ if (config.DB.TYPE_DB === 'postgres') {
   const USER = encodeURIComponent(config.DB.POSTGRES.DB_USER)
   const PASSWORD = encodeURIComponent(config.DB.POSTGRES.DB_PASS)
   const URI = `postgres://${USER}:${PASSWORD}@${config.DB.POSTGRES.DB_HOST}:${config.DB.POSTGRES.DB_PORT}/${config.DB.POSTGRES.DB_NAME}`
-
+  console.log(URI)
   const sequelize = new Sequelize(URI, {
     dialect: 'postgres'
   })
 
   setupModels(sequelize)
 
-  /*  sequelize.sync().then(() => {
+  sequelize.sync().then(() => {
     console.log('Database & tables created!')
   }).catch(err => {
     console.log('Error creating database in postgres: ', err)
-  }) */
+  })
 
   module.exports = sequelize
 } else if (config.DB.TYPE_DB === 'mysql') {
