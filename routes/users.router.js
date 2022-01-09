@@ -11,37 +11,40 @@ const {
 const router = express.Router()
 const service = new UserService()
 
+// GET /api/v1/users
 router.get('/', async (req, res, next) => {
   try {
-    const categories = await service.listUsers()
-    res.json(categories)
+    const users = await service.findAll()
+    res.json(users)
   } catch (error) {
     next(error)
   }
 })
 
+// GET /api/v1/users/:id
 router.get(
   '/:id',
   validationHandler(idUserSchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params
-      const category = await service.findOne(id)
-      res.json(category)
+      const user = await service.findOne(id)
+      res.json(user)
     } catch (error) {
       next(error)
     }
   }
 )
 
+// POST /api/v1/users
 router.post(
   '/',
   validationHandler(createUserSchema, 'body'),
   async (req, res, next) => {
     try {
       const body = req.body
-      const newCategory = await service.create(body)
-      res.status(201).json(newCategory)
+      const newUser = await service.create(body)
+      res.status(201).json(newUser)
     } catch (error) {
       console.log(error)
       next(error)
@@ -49,6 +52,7 @@ router.post(
   }
 )
 
+// PATCH /api/v1/users/:id
 router.patch(
   '/:id',
   validationHandler(idUserSchema, 'params'),
@@ -56,24 +60,24 @@ router.patch(
   async (req, res, next) => {
     try {
       const { id } = req.params
-      console.log(id)
       const body = req.body
-      const category = await service.update(id, body)
-      res.json(category)
+      const updatedUser = await service.update(id, body)
+      res.json(updatedUser)
     } catch (error) {
       next(error)
     }
   }
 )
 
+// DELETE /api/v1/users/:id
 router.delete(
   '/:id',
   validationHandler(idUserSchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params
-      await service.delete(id)
-      res.status(201).json({ id })
+      const idUserDeleted = await service.delete(id)
+      res.status(201).json({ idUserDeleted })
     } catch (error) {
       next(error)
     }

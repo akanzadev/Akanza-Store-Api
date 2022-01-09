@@ -13,7 +13,7 @@ class UserService {
     return newUser
   }
 
-  async listUsers () {
+  async findAll () {
     /* const result = await this.client.query('SELECT * FROM tasks')
     console.log(result.rows)
     if (!result.rows.length) throw boom.notFound('No users found')
@@ -21,14 +21,24 @@ class UserService {
     /* const [data, metadata] = await sequalize.query('SELECT * FROM tasks')
     if (!data.length === 0) throw boom.notFound('No users found')
     return data */
-    const data = await models.User.findAll()
-    if (!data.length === 0) throw boom.notFound('No users found')
-    return data
+    const users = await models.User.findAll(
+      {
+        include: ['customer'],
+        attributes: {
+          exclude: ['password']
+        }
+      }
+    )
+    if (!users.length === 0) throw boom.notFound('No users found')
+    return users
   }
 
   async findOne (id) {
-    console.log('findOne, id: ', id)
-    const user = await models.User.findByPk(id)
+    const user = await models.User.findByPk(id, {
+      attributes: {
+        exclude: ['password']
+      }
+    })
     if (!user) throw boom.notFound('User not found')
     return user
   }
@@ -42,8 +52,10 @@ class UserService {
 
   async delete (id) {
     const user = await this.findOne(id)
-    await user.destroy()
-    return { id }
+    await user.destroy().catch(() => {
+      throw boom.badRequest('Error in delete User')
+    })
+    return id
   }
 }
 

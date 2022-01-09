@@ -13,11 +13,11 @@ if (config.DB.TYPE_DB === 'postgres') {
 
   setupModels(sequelize)
 
-  sequelize.sync().then(() => {
+  /* sequelize.sync().then(() => {
     console.log('Database & tables created!')
   }).catch(err => {
     console.log('Error creating database in postgres: ', err)
-  })
+  }) */
 
   module.exports = sequelize
 } else if (config.DB.TYPE_DB === 'mysql') {
