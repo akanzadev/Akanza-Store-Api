@@ -45,6 +45,7 @@ class UserService {
 
   async update (id, changes) {
     const user = await this.findOne(id)
+    if (!user) throw boom.notFound('User not found')
     const updatedUser = await user.update(changes)
     if (!updatedUser) throw boom.notFound('Error in update User')
     return updatedUser

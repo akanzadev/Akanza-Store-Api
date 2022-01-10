@@ -11,29 +11,32 @@ const {
 const router = express.Router()
 const service = new CategoryService()
 
+// GET /api/v1/categories
 router.get('/', async (req, res, next) => {
   try {
-    const categories = await service.find()
+    const categories = await service.findAll()
     res.json(categories)
   } catch (error) {
     next(error)
   }
 })
 
+// GET /api/v1/users/:id
 router.get(
   '/:id',
   validationHandler(idCategorySchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params
-      const category = await service.findOne(id)
-      res.json(category)
+      const categories = await service.findOne(id)
+      res.json(categories)
     } catch (error) {
       next(error)
     }
   }
 )
 
+// POST /api/v1/categories
 router.post(
   '/',
   validationHandler(createCategorySchema, 'body'),
@@ -48,6 +51,7 @@ router.post(
   }
 )
 
+// PATCH /api/v1/categories/:id
 router.patch(
   '/:id',
   validationHandler(idCategorySchema, 'params'),
@@ -64,6 +68,7 @@ router.patch(
   }
 )
 
+// DELETE /api/v1/categories/:id
 router.delete(
   '/:id',
   validationHandler(idCategorySchema, 'params'),

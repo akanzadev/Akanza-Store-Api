@@ -11,15 +11,17 @@ const {
 const router = express.Router()
 const service = new ProductsService()
 
+// GET /api/v1/products
 router.get('/', async (req, res, next) => {
   try {
-    const products = await service.find()
+    const products = await service.findAll()
     res.json(products)
   } catch (error) {
     next(error)
   }
 })
 
+// GET /api/v1/products/:id
 router.get(
   '/:id',
   validationHandler(idProductSchema, 'params'),
@@ -34,6 +36,7 @@ router.get(
   }
 )
 
+// POST /api/v1/products
 router.post(
   '/',
   validationHandler(createProductSchema, 'body'),
@@ -48,6 +51,7 @@ router.post(
   }
 )
 
+// PATCH /api/v1/products/:id
 router.patch(
   '/:id',
   validationHandler(idProductSchema, 'params'),
@@ -64,6 +68,7 @@ router.patch(
   }
 )
 
+// DELETE /api/v1/products/:id
 router.delete(
   '/:id',
   validationHandler(idProductSchema, 'params'),

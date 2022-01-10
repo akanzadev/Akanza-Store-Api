@@ -8,7 +8,7 @@ class CustomerService {
     const customers = await models.Customer.findAll({
       include: ['user']
     })
-    if (!customers.length === 0) throw boom.notFound('No customers found')
+    if (customers.length === 0) throw boom.notFound('No customers found')
     return customers
   }
 
