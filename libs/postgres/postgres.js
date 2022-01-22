@@ -37,9 +37,15 @@ class Postgres {
           password: config.DB.DB_PASS,
           port: config.DB.DB_PORT
         }) */
-        Postgres.connection = new PostgresClient({
+        const options = {
           connectionString: URI
-        })
+        }
+        if (config.SERVER.MODE !== 'development') {
+          options.ssl = {
+            rejectUnauthorized: false
+          }
+        }
+        Postgres.connection = new PostgresClient(options)
         console.log('Connected succesfully')
       }
       return Postgres.connection

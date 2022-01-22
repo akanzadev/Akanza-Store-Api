@@ -12,8 +12,10 @@ if (config.DB.TYPE_DB === 'postgres') {
     logging: console.log
   }
   if (config.SERVER.MODE !== 'development') {
-    options.ssl = {
-      rejectUnauthorized: false
+    options.dialectOptions = {
+      ssl: {
+        rejectUnauthorized: false
+      }
     }
     options.logging = false
   }
