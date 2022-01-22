@@ -9,6 +9,9 @@ const productCategoryId = Joi.number().integer()
 const productLimit = Joi.number().integer().min(1)
 const productOffset = Joi.number().integer().min(0)
 
+const productPriceMin = Joi.number().integer()
+const productPriceMax = Joi.number().integer()
+
 const createProductSchema = Joi.object({
   name: productName.required(),
   price: productPrice.required(),
@@ -31,7 +34,13 @@ const idProductSchema = Joi.object({
 
 const paginationSchema = Joi.object({
   limit: productLimit,
-  offset: productOffset
+  offset: productOffset,
+  price: productPrice,
+  price_min: productPriceMin,
+  price_max: productPriceMax.when('price_min', {
+    is: Joi.number().integer().required(),
+    then: Joi.required()
+  })
 })
 
 const productSchemas = {

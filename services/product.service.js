@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom')
+const { Op } = require('sequelize')
 const { models } = require('../libs/postgres/sequalize')
 
 class ProductsService {
@@ -11,12 +12,26 @@ class ProductsService {
     return newProduct
   }
 
-  async findAll ({ limit = 1, offset = 0 }) {
-    const products = await models.Product.findAll({
+  async findAll ({ limit = 10, offset = 0, ...rest }) {
+    const options = {
       include: ['category'],
       limit,
-      offset
-    })
+      offset,
+      where: {}
+    }
+    if (rest.price) {
+      options.where = {
+        price: rest.price
+      }
+    }
+    if (rest.price_max && rest.price_min) {
+      options.where = {
+        price: {
+          [Op.between]: [rest.price_min, rest.price_max]
+        }
+      }
+    }
+    const products = await models.Product.findAll(options)
     if (products.length === 0) throw boom.notFound('No products found')
     return products
   }
