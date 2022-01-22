@@ -12,7 +12,9 @@ class ProductsService {
   }
 
   async findAll () {
-    const products = await models.Product.findAll()
+    const products = await models.Product.findAll({
+      include: ['category']
+    })
     if (products.length === 0) throw boom.notFound('No products found')
     return products
   }

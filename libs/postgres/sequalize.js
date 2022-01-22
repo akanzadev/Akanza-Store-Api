@@ -24,7 +24,7 @@ if (config.DB.TYPE_DB === 'postgres') {
   const USER = encodeURIComponent(config.DB.MYSQL.DB_USER)
   const PASSWORD = encodeURIComponent(config.DB.MYSQL.DB_PASS)
   const URI = `mysql://${USER}:${PASSWORD}@${config.DB.MYSQL.DB_HOST}:${config.DB.MYSQL.DB_PORT}/${config.DB.MYSQL.DB_NAME}`
-
+  console.log(URI)
   const sequelize = new Sequelize(URI, {
     dialect: 'mysql'
   })
