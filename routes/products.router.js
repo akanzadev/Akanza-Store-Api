@@ -5,21 +5,24 @@ const validationHandler = require('../middlewares/validation.handler')
 const {
   createProductSchema,
   idProductSchema,
-  updateProductSchema
+  updateProductSchema,
+  paginationSchema
 } = require('../utils/schemas')
 
 const router = express.Router()
 const service = new ProductsService()
 
 // GET /api/v1/products
-router.get('/', async (req, res, next) => {
-  try {
-    const products = await service.findAll()
-    res.json(products)
-  } catch (error) {
-    next(error)
-  }
-})
+router.get('/',
+  validationHandler(paginationSchema, 'query'),
+  async (req, res, next) => {
+    try {
+      const products = await service.findAll(req.query)
+      res.json(products)
+    } catch (error) {
+      next(error)
+    }
+  })
 
 // GET /api/v1/products/:id
 router.get(
