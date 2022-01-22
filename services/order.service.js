@@ -8,6 +8,12 @@ class OrderService {
     return newOrder
   }
 
+  async addItem (data) {
+    const orderWithItem = await models.OrderProduct.create(data)
+    if (!orderWithItem) throw boom.badRequest('Error in add item')
+    return orderWithItem
+  }
+
   async findAll () {
     const orders = await models.Order.findAll()
     if (orders.length === 0) throw boom.notFound('No orders found')
@@ -23,7 +29,8 @@ class OrderService {
           /* attributes:{
             include: ['id', 'name', 'email', 'phone']
           } */
-        }
+        },
+        'items'
       ]
     })
     if (!order) throw boom.notFound('Order not found')
