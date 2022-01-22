@@ -3,14 +3,22 @@ const config = require('../../config/config')
 const setupModels = require('../../db/models')
 
 if (config.DB.TYPE_DB === 'postgres') {
-  const USER = encodeURIComponent(config.DB.POSTGRES.DB_USER)
+  /*  const USER = encodeURIComponent(config.DB.POSTGRES.DB_USER)
   const PASSWORD = encodeURIComponent(config.DB.POSTGRES.DB_PASS)
-  const URI = `postgres://${USER}:${PASSWORD}@${config.DB.POSTGRES.DB_HOST}:${config.DB.POSTGRES.DB_PORT}/${config.DB.POSTGRES.DB_NAME}`
-  console.log(URI)
-  const sequelize = new Sequelize(URI, {
-    dialect: 'postgres'
-  })
+  let URI = `postgres://${USER}:${PASSWORD}@${config.DB.POSTGRES.DB_HOST}:${config.DB.POSTGRES.DB_PORT}/${config.DB.POSTGRES.DB_NAME}`
+ */
+  const options = {
+    dialect: 'postgres',
+    logging: console.log
+  }
+  if (config.SERVER.MODE !== 'development') {
+    options.ssl = {
+      rejectUnauthorized: false
+    }
+    options.logging = false
+  }
 
+  const sequelize = new Sequelize(config.DB.POSTGRES.DB_URI, options)
   setupModels(sequelize)
 
   /* sequelize.sync().then(() => {
@@ -24,7 +32,7 @@ if (config.DB.TYPE_DB === 'postgres') {
   const USER = encodeURIComponent(config.DB.MYSQL.DB_USER)
   const PASSWORD = encodeURIComponent(config.DB.MYSQL.DB_PASS)
   const URI = `mysql://${USER}:${PASSWORD}@${config.DB.MYSQL.DB_HOST}:${config.DB.MYSQL.DB_PORT}/${config.DB.MYSQL.DB_NAME}`
-  console.log(URI)
+  console.log('🚀 ~ file: sequalize.js ~ line 34 ~ URI', URI)
   const sequelize = new Sequelize(URI, {
     dialect: 'mysql'
   })

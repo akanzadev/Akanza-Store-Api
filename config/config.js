@@ -13,14 +13,16 @@ const config = {
       DB_PORT: process.env.DB_PORT || 7800,
       DB_NAME: process.env.DB_NAME || 'my_store',
       DB_USER: process.env.DB_USER || 'root',
-      DB_PASS: process.env.DB_PASS || 'admin'
+      DB_PASS: process.env.DB_PASS || 'admin',
+      DB_URI: process.env.DATABASE_URL || 'mysql://root:admin@localhost:7800/my_store'
     },
     POSTGRES: {
       DB_HOST: process.env.DB_HOST || 'localhost',
       DB_PORT: process.env.DB_PORT || 5432,
       DB_NAME: process.env.DB_NAME || 'my_store',
       DB_USER: process.env.DB_USER || 'root',
-      DB_PASS: process.env.DB_PASS || 'admin'
+      DB_PASS: process.env.DB_PASS || 'admin',
+      DB_URI: process.env.DATABASE_URL || 'postgres://postgres:admin@localhost:5432/my_store'
     }
   },
   JWT: {
