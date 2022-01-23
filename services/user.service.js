@@ -1,5 +1,6 @@
 const boom = require('@hapi/boom')
 const { models } = require('../libs/postgres/sequalize')
+const bcrypt = require('bcryptjs')
 // const sequelize = require('../libs/postgres/sequalize')
 // const { Postgres } = require('../libs/postgres/postgres')
 
@@ -9,7 +10,14 @@ class UserService {
   } */
 
   async create (data) {
-    const newUser = await models.User.create(data)
+    const hash = await bcrypt.hash(data.password, 10)
+    const newUser = await models.User.create({
+      ...data,
+      password: hash
+    })
+    if (!newUser) throw boom.badRequest('Error in create User')
+    console.log('🚀 ~ file: user.service.js ~ line 19 ~ UserService ~ create ~ newUser', newUser)
+    delete newUser.dataValues.password
     return newUser
   }
 

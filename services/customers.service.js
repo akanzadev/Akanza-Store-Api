@@ -1,5 +1,6 @@
 const boom = require('@hapi/boom')
 const { models } = require('../libs/postgres/sequalize')
+const bcrypt = require('bcryptjs')
 
 class CustomerService {
   // constructor () {}
@@ -27,10 +28,15 @@ class CustomerService {
       ...data,
       userId: newUser.id
     }) */
-    const newCustomer = await models.Customer.create(data, {
-      include: ['user']
+    const hash = await bcrypt.hash(data.user.password, 10)
+    const newCustomer = await models.Customer.create({
+      ...data,
+      user: {
+        ...data.user,
+        password: hash
+      }
     })
-    if (!newCustomer) throw boom.badRequest('Error in create customer')
+    if (!newCustomer) throw boom.notFound('Error in create customer')
     return newCustomer
   }
 
