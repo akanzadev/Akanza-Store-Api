@@ -26,6 +26,8 @@ const options = {
   }
 }
 app.use(cors(options))
+// Strategies for Auth
+require('./utils/auth/index')
 
 app.get('/', (req, res) => {
   res.send('Hola mi server en express')

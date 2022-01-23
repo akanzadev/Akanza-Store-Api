@@ -51,6 +51,16 @@ class UserService {
     return user
   }
 
+  async findByEmail (email) {
+    const user = await models.User.findOne({
+      where: {
+        email
+      }
+    })
+    if (!user) throw boom.notFound('User not found')
+    return user
+  }
+
   async update (id, changes) {
     const user = await this.findOne(id)
     if (!user) throw boom.notFound('User not found')
