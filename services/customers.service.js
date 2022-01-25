@@ -35,7 +35,10 @@ class CustomerService {
         ...data.user,
         password: hash
       }
+    }, {
+      include: ['user']
     })
+    delete newCustomer.dataValues.user.dataValues.password
     if (!newCustomer) throw boom.notFound('Error in create customer')
     return newCustomer
   }

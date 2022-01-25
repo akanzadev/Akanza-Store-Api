@@ -8,6 +8,7 @@ const {
   updateOrderSchema,
   addItemSchema
 } = require('../utils/schemas')
+const passport = require('passport')
 
 const router = express.Router()
 const service = new OrderService()
@@ -45,6 +46,21 @@ router.post(
     try {
       const body = req.body
       const newOrder = await service.create(body)
+      res.status(201).json(newOrder)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+// POST /api/v1/orders/ByUser
+router.post(
+  '/ByUser',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const { user } = req
+      const newOrder = await service.createWithUser(user.id)
       res.status(201).json(newOrder)
     } catch (error) {
       next(error)

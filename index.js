@@ -8,7 +8,6 @@ const {
   boomErrorHandler,
   queryErrorHandler
 } = require('./middlewares/error.handler')
-const { checkApiKey } = require('./middlewares/auth.handler')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -30,9 +29,6 @@ app.use(cors(options))
 require('./utils/auth/index')
 
 app.get('/', (req, res) => {
-  res.send('Hola mi server en express')
-})
-app.get('/nueva-ruta', checkApiKey, (req, res) => {
   res.send('Hola mi server en express')
 })
 

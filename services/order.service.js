@@ -8,6 +8,20 @@ class OrderService {
     return newOrder
   }
 
+  async createWithUser (userId) {
+    const customer = await models.Customer.findOne({
+      where: {
+        '$user.id$': userId
+      },
+      include: ['user']
+    })
+    console.log('🚀 ~ file: order.service.js ~ line 24 ~ OrderService ~ createWithUser ~ customer', customer)
+    if (!customer) throw boom.notFound('Customer not found')
+    const newOrder = await models.Order.create({ customerId: customer.id })
+    if (!newOrder) throw boom.badRequest('Error in create order')
+    return newOrder
+  }
+
   async addItem (data) {
     const orderWithItem = await models.OrderProduct.create(data)
     if (!orderWithItem) throw boom.badRequest('Error in add item')
@@ -35,6 +49,22 @@ class OrderService {
     })
     if (!order) throw boom.notFound('Order not found')
     return order
+  }
+
+  async findAllByUser (userId) {
+    const orders = await models.Order.findAll({
+      where: {
+        '$customer.user.id$': userId
+      },
+      include: [
+        {
+          association: 'customer',
+          include: ['user']
+        }
+      ]
+    })
+    if (orders.length === 0) throw boom.notFound('No orders found')
+    return orders
   }
 
   async update (id, changes) {

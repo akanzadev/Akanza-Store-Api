@@ -6,7 +6,9 @@ class CategoryService {
   } */
 
   async create (data) {
-    const newCategory = await models.Category.create(data)
+    const newCategory = await models.Category.create(data).catch(() => {
+      throw boom.badRequest('Category already exists')
+    })
     if (!newCategory) throw boom.badRequest('Error in create category')
     return newCategory
   }
