@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const morgan = require('morgan')
 const routerApi = require('./routes')
 const config = require('./config/config')
 const {
@@ -13,6 +14,7 @@ const app = express()
 const port = process.env.PORT || 3000
 
 app.use(express.json())
+app.use(morgan('dev'))
 
 const whitelist = ['http://localhost:8080', 'https://myapp.com']
 const options = {

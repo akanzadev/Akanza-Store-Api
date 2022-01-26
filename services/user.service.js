@@ -57,7 +57,7 @@ class UserService {
         email
       }
     })
-    if (!user) throw boom.notFound('User not found')
+    if (!user) throw boom.notFound('Error in find User by email')
     return user
   }
 

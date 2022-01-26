@@ -2,9 +2,11 @@ const express = require('express')
 const passport = require('passport')
 
 const validationHandler = require('../middlewares/validation.handler')
-const { signPayload } = require('../utils/helpers/jwt.handler')
+const AuthService = require('../services/auth.service')
 const { loginAuthSchema } = require('../utils/schemas')
+
 const router = express.Router()
+const service = new AuthService()
 
 // POST /api/v1/auth/login
 router.post(
@@ -16,14 +18,22 @@ router.post(
   async (req, res, next) => {
     try {
       const { user } = req
-      const token = signPayload({
-        sub: user.id,
-        role: user.role
-      })
-      res.status(201).json({
-        user,
-        token
-      })
+      const rta = service.generateJWT(user)
+      res.status(201).json(rta)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+// POST /api/v1/auth/recovery
+router.post(
+  '/recovery',
+  async (req, res, next) => {
+    try {
+      const { email } = req.body
+      const rta = await service.sendEmail(email)
+      res.status(200).json(rta)
     } catch (error) {
       next(error)
     }
