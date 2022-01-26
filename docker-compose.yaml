@@ -4,6 +4,7 @@ services:
   postgresql:
     container_name: postgresql-container
     image: postgres:13
+    restart: always
     ports:
       - "5432:5432"
     environment:
@@ -16,6 +17,7 @@ services:
   pgadmin:
     container_name: pgadmin-container
     image: dpage/pgadmin4
+    restart: always
     ports:
       - "5050:80"
     environment:
