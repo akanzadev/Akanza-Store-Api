@@ -14,9 +14,10 @@ const app = express()
 const port = process.env.PORT || 3000
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 app.use(morgan('dev'))
 
-const whitelist = ['http://localhost:8080', 'https://myapp.com']
+const whitelist = ['http://localhost:4200', 'https://myapp.com']
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
@@ -26,6 +27,7 @@ const options = {
     }
   }
 }
+// CORS
 app.use(cors(options))
 // Strategies for Auth
 require('./utils/auth/index')

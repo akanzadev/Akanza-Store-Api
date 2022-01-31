@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "producto89",
+    "description": "producto7 producto8",
+    "price": 48,
+    "createdAt": "2022-01-29T16:06:07.020Z",
+    "categoryId": 1,
+    "category": {
+      "id": 1,
+      "name": "category 1",
+      "image": "https://cdn.corporatefinanceinstitute.com/assets/products-and-services-1024x1024.jpeg",
+      "createdAt": "2022-01-29T16:04:34.781Z"
+    },
+    "images": ["sd", "dsds"]
+  },
+  {
+    "id": 2,
+    "name": "producto89",
+    "description": "producto7 producto8",
+    "price": 48,
+    "createdAt": "2022-01-29T16:06:38.671Z",
+    "categoryId": 1,
+    "category": {
+      "id": 1,
+      "name": "category 1",
+      "image": "https://cdn.corporatefinanceinstitute.com/assets/products-and-services-1024x1024.jpeg",
+      "createdAt": "2022-01-29T16:04:34.781Z"
+    },
+    "images": ["adsa", "dsd"]
+  }
+]

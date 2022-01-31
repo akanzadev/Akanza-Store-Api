@@ -8,12 +8,14 @@ const {
   updateProductSchema,
   paginationSchema
 } = require('../utils/schemas')
+const chargeImageHandler = require('../middlewares/images.handler')
 
 const router = express.Router()
 const service = new ProductsService()
 
 // GET /api/v1/products
-router.get('/',
+router.get(
+  '/',
   validationHandler(paginationSchema, 'query'),
   async (req, res, next) => {
     try {
@@ -22,7 +24,8 @@ router.get('/',
     } catch (error) {
       next(error)
     }
-  })
+  }
+)
 
 // GET /api/v1/products/:id
 router.get(
@@ -42,11 +45,11 @@ router.get(
 // POST /api/v1/products
 router.post(
   '/',
-  validationHandler(createProductSchema, 'body'),
+  [chargeImageHandler, validationHandler(createProductSchema, 'body')],
   async (req, res, next) => {
     try {
       const body = req.body
-      const newProduct = await service.create(body)
+      const newProduct = await service.create(body, req.files)
       res.status(201).json(newProduct)
     } catch (error) {
       next(error)
@@ -71,6 +74,23 @@ router.patch(
   }
 )
 
+// PUT /api/v1/products/:id
+router.put(
+  '/:id',
+  validationHandler(idProductSchema, 'params'),
+  validationHandler(updateProductSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const body = req.body
+      const product = await service.update(id, body)
+      res.json(product)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
 // DELETE /api/v1/products/:id
 router.delete(
   '/:id',
@@ -78,8 +98,8 @@ router.delete(
   async (req, res, next) => {
     try {
       const { id } = req.params
-      await service.delete(id)
-      res.status(201).json({ id })
+      const rta = await service.delete(id)
+      res.status(201).json(rta)
     } catch (error) {
       next(error)
     }

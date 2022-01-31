@@ -5,14 +5,14 @@ const customerName = Joi.string().min(3).max(30)
 const customerLastName = Joi.string()
 const customerPhone = Joi.string()
 const customerUserId = Joi.number().integer()
-const customerEmail = Joi.string().email()
-const customerPassword = Joi.string()
+/* const customerEmail = Joi.string().email()
+const customerPassword = Joi.string() */
 
 const idCustomerSchema = Joi.object({
   id: customerId.required()
 })
 
-const createCustomerSchema = Joi.object({
+/* const createCustomerSchema = Joi.object({
   name: customerName.required(),
   lastName: customerLastName.required(),
   phone: customerPhone.required(),
@@ -20,6 +20,12 @@ const createCustomerSchema = Joi.object({
     email: customerEmail.required(),
     password: customerPassword.required()
   })
+}) */
+const createCustomerSchema = Joi.object({
+  name: customerName.required(),
+  lastName: customerLastName.required(),
+  phone: customerPhone.required(),
+  userId: customerUserId.required()
 })
 
 const updateCustomerSchema = Joi.object({

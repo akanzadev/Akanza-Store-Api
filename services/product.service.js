@@ -1,18 +1,35 @@
 const boom = require('@hapi/boom')
 const { Op } = require('sequelize')
 const { models } = require('../libs/postgres/sequalize')
+const ImagesService = require('./images.service')
 
 class ProductsService {
-  /* constructor () {
-  } */
-
-  async create (data) {
-    const newProduct = await models.Product.create(data)
-    if (!newProduct) throw boom.badRequest('Error in create product')
-    return newProduct
+  constructor () {
+    this.imageService = new ImagesService()
   }
 
-  async findAll ({ limit = 10, offset = 0, ...rest }) {
+  /**
+   * @description Create a new product
+   * @param {Object} data
+   * @returns {Object}
+   */
+  async create (data, images) {
+    const newProduct = await models.Product.create(data)
+    if (!newProduct) throw boom.badRequest('Error in create product')
+    if (!images) return newProduct
+    const imagesUrls = await this.imageService.uploadToCloudinary(images, newProduct.id)
+    return {
+      ...newProduct.toJSON(),
+      images: imagesUrls
+    }
+  }
+
+  /**
+   * @description Find all products
+   * @param {Object} query
+   * @returns {Array}
+   */
+  async findAll ({ limit = 50, offset = 0, ...rest }) {
     const options = {
       include: ['category'],
       limit,
@@ -33,7 +50,7 @@ class ProductsService {
     }
     const products = await models.Product.findAll(options)
     if (products.length === 0) throw boom.notFound('No products found')
-    return products
+    return await this.imageService.addImagesToProducts(products)
   }
 
   async findOne (id) {
@@ -41,24 +58,37 @@ class ProductsService {
       include: ['category']
     })
     if (!product) throw boom.notFound('Product not found')
-    return product
+    const images = await this.imageService.findByProduct(product.id)
+    return {
+      ...product.toJSON(),
+      images
+    }
   }
 
   async update (id, changes) {
-    const product = await this.findOne(id)
+    const product = await models.Product.findByPk(id)
     if (!product) throw boom.notFound('Product not found')
     const updatedProduct = await product.update(changes)
     if (!updatedProduct) throw boom.badRequest('Error in update product')
-    return updatedProduct
+    const images = await this.imageService.findByProduct(product.id)
+    return {
+      ...updatedProduct.toJSON(),
+      images
+    }
   }
 
   async delete (id) {
-    const product = await this.findOne(id)
+    await this.imageService.deleteAllByProduct(id)
+    const product = await models.Product.findByPk(id)
     if (!product) throw boom.notFound('Product not found')
-    await product.destroy().catch(() => {
-      throw boom.badRequest('Error in delete product')
+    await product.destroy().catch((e) => {
+      throw boom.badRequest('Error in delete product', e)
     })
-    return id
+    return {
+      ok: true,
+      id,
+      message: 'Product deleted'
+    }
   }
 }
 

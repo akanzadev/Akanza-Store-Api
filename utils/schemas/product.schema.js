@@ -1,9 +1,11 @@
 const Joi = require('joi')
 
 const productId = Joi.number().integer()
-const productName = Joi.string().min(3).max(15)
-const productPrice = Joi.number().integer().min(10)
+const productName = Joi.string().min(3).max(25)
+const productPrice = Joi.number().precision(2)
 const productDescription = Joi.string().min(10)
+// array de imagenes
+const productImages = Joi.array().items(Joi.string().uri())
 const productImage = Joi.string().uri()
 const productCategoryId = Joi.number().integer()
 const productLimit = Joi.number().integer().min(1)
@@ -15,7 +17,7 @@ const productPriceMax = Joi.number().integer()
 const createProductSchema = Joi.object({
   name: productName.required(),
   price: productPrice.required(),
-  image: productImage.required(),
+  images: productImages.optional(),
   description: productDescription.required(),
   categoryId: productCategoryId.required()
 })

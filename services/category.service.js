@@ -38,8 +38,8 @@ class CategoryService {
   async delete (id) {
     const category = await this.findOne(id)
     if (!category) throw boom.notFound('Category not found')
-    await category.destroy().catch(() => {
-      throw boom.badRequest('Error in delete category')
+    await category.destroy().catch((e) => {
+      throw boom.badRequest('Nose pudo eliminar categoria porque tiene productos asociados')
     })
     return id
   }

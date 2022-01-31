@@ -13,8 +13,9 @@ class AuthService {
   } */
 
   async getUser ({ email, password }) {
-    const user = await service.findByEmail(email)
-    if (!user) throw boom.unauthorized('Invalid email or password')
+    const user = await service.findByEmail(email).catch((e) => {
+      throw boom.unauthorized('Invalid email or password')
+    })
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) throw boom.unauthorized('Invalid email or password')
     delete user.dataValues.password

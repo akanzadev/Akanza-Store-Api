@@ -4,7 +4,6 @@ services:
   postgresql:
     container_name: postgresql-container
     image: postgres:13
-    restart: always
     ports:
       - "5432:5432"
     environment:
@@ -17,7 +16,6 @@ services:
   pgadmin:
     container_name: pgadmin-container
     image: dpage/pgadmin4
-    restart: always
     ports:
       - "5050:80"
     environment:
@@ -27,7 +25,6 @@ services:
   mysql:
     container_name: mysqldb-container
     image: mysql:latest
-    restart: always
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_USER: akanza
@@ -44,7 +41,6 @@ services:
   phpmyadmin:
     container_name: phpmyadmin-container
     image: phpmyadmin/phpmyadmin
-    restart: always
     environment:
       PMA_ARBITRARY: 1
       PMA_USER: root
