@@ -57,6 +57,12 @@ class AuthService {
       message: 'Email sent'
     }
   }
+
+  async getProfile (user) {
+    const rta = await service.findOne(user.id)
+    if (!rta) throw boom.unauthorized()
+    return rta
+  }
 }
 
 module.exports = AuthService

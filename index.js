@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const path = require('path')
 const routerApi = require('./routes')
 const config = require('./config/config')
 const {
@@ -26,7 +27,10 @@ const options = {
       callback(new Error('no permitido'))
     }
   }
+
 }
+// Static Middleware
+app.use('/api/v1/files', express.static(path.join(__dirname, 'public')))
 // CORS
 app.use(cors(options))
 // Strategies for Auth
@@ -35,7 +39,6 @@ require('./utils/auth/index')
 app.get('/', (req, res) => {
   res.send('Hola mi server en express')
 })
-
 // Set Routes
 routerApi(app)
 

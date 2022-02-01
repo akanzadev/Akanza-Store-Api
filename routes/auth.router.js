@@ -40,4 +40,21 @@ router.post(
   }
 )
 
+// POST /api/v1/auth/profile
+router.get(
+  '/profile',
+  [
+    passport.authenticate('jwt', { session: false })
+  ],
+  async (req, res, next) => {
+    try {
+      const { user } = req
+      const rta = await service.getProfile(user)
+      res.status(201).json(rta)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
 module.exports = router
