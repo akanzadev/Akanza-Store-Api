@@ -72,6 +72,32 @@ class ProductsService {
     }
   }
 
+  async listProductsByCategory ({ limit = 50, offset = 0, ...rest }) {
+    const options = {
+      include: ['category'],
+      limit,
+      offset,
+      where: {
+        categoryId: rest.categoryId
+      }
+    }
+    if (rest.price) {
+      options.where = {
+        price: rest.price
+      }
+    }
+    if (rest.price_max && rest.price_min) {
+      options.where = {
+        price: {
+          [Op.between]: [rest.price_min, rest.price_max]
+        }
+      }
+    }
+    const products = await models.Product.findAll(options)
+    if (products.length === 0) throw boom.notFound('No products found')
+    return await this.imageService.addImagesToProducts(products)
+  }
+
   async update (id, changes) {
     const product = await models.Product.findByPk(id)
     if (!product) throw boom.notFound('Product not found')

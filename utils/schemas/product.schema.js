@@ -45,10 +45,15 @@ const paginationSchema = Joi.object({
   })
 })
 
+const paginationSchemaWithCategory = paginationSchema.keys({
+  categoryId: productCategoryId
+})
+
 const productSchemas = {
   createProductSchema,
   updateProductSchema,
   idProductSchema,
-  paginationSchema
+  paginationSchema,
+  paginationSchemaWithCategory
 }
 module.exports = productSchemas

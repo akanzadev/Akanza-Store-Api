@@ -20,7 +20,11 @@ class ImagesService {
       const { originalname, buffer } = image
       const parser = new DatauriParser()
       parser.format(path.extname(originalname), buffer)
-      if (!parser.content) throw boom.boomify(new Error('Error al parsear el archivo buffer a string'))
+      if (!parser.content) {
+        throw boom.boomify(
+          new Error('Error al parsear el archivo buffer a string')
+        )
+      }
       const result = await cloudinary.uploader.upload(parser.content, {
         folder: 'akanza-store/products',
         public_id: `${productId}-${path.parse(originalname).name}`
@@ -42,7 +46,7 @@ class ImagesService {
         productId
       }
     })
-    if (images.length >= 3) throw boom.badRequest('Solo se permiten 3 imagenes por producto')
+    if (images.length >= 3) { throw boom.badRequest('Solo se permiten 3 imagenes por producto') }
     return true
   }
 
@@ -50,13 +54,13 @@ class ImagesService {
     for (const image of images) {
       const publicId = image.title
       const result = await cloudinary.uploader.destroy(publicId)
-      if (result.result !== 'ok') throw boom.badRequest('Error al eliminar imagen de Cloudinary')
+      if (result.result !== 'ok') { throw boom.badRequest('Error al eliminar imagen de Cloudinary') }
     }
   }
 
   async findAll () {
     const images = await models.Image.findAll()
-    return images.map(image => image.url)
+    return images.map((image) => image.url)
   }
 
   async addImagesToProducts (products) {
@@ -84,11 +88,10 @@ class ImagesService {
         productId
       }
     })
-    return images.map(image => image.url)
+    return images.map((image) => image.url)
   }
 
-  async update (id, changes) {
-  }
+  async update (id, changes) {}
 
   async deleteAllByProduct (idProduct) {
     const images = await models.Image.findAll({
@@ -96,7 +99,7 @@ class ImagesService {
         productId: idProduct
       }
     })
-    if (images.length === 0) throw boom.badRequest('No hay imagenes para eliminar')
+    if (images.length === 0) /* throw boom.badRequest('No hay imagenes para eliminar') */ return true
     await this.deleteFromCloudinary(images)
     await models.Image.destroy({
       where: {

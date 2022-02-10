@@ -1,9 +1,11 @@
 const boom = require('@hapi/boom')
 const { models } = require('../libs/postgres/sequalize')
+const ProductsService = require('./product.service')
 
 class CategoryService {
-  /*  constructor () {
-  } */
+  constructor () {
+    this.productService = new ProductsService()
+  }
 
   async create (data) {
     const newCategory = await models.Category.create(data).catch(() => {

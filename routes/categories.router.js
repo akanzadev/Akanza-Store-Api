@@ -5,13 +5,16 @@ const validationHandler = require('../middlewares/validation.handler')
 const {
   createCategorySchema,
   idCategorySchema,
-  updateCategorySchema
+  updateCategorySchema,
+  paginationSchemaWithCategory
 } = require('../utils/schemas')
 const passport = require('passport')
 const { checkRoles } = require('../middlewares/auth.handler')
+const ProductsService = require('../services/product.service')
 
 const router = express.Router()
 const service = new CategoryService()
+const productService = new ProductsService()
 
 // GET /api/v1/categories
 router.get('/', async (req, res, next) => {
@@ -23,14 +26,33 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// GET /api/v1/users/:id
+// GET /api/v1/categories/:id
 router.get(
   '/:id',
   validationHandler(idCategorySchema, 'params'),
+  validationHandler(paginationSchemaWithCategory, 'query'),
   async (req, res, next) => {
     try {
       const { id } = req.params
       const categories = await service.findOne(id)
+      res.json(categories)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+// GET /api/v1/categories/:id/products
+router.get(
+  '/:id/products',
+  validationHandler(idCategorySchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const categories = await productService.listProductsByCategory({
+        categoryId: id,
+        ...req.query
+      })
       res.json(categories)
     } catch (error) {
       next(error)
