@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 // app.use(morgan('dev'))
 
-const whitelist = ['http://localhost:4200', 'https://myapp.com']
+/* const whitelist = ['http://localhost:4200', 'https://myapp.com']
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
@@ -28,11 +28,11 @@ const options = {
     }
   }
 
-}
+} */
 // Static Middleware
 app.use('/api/v1/files', express.static(path.join(__dirname, 'public')))
 // CORS
-app.use(cors(options))
+app.use(cors())
 // Strategies for Auth
 require('./utils/auth/index')
 

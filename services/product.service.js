@@ -14,10 +14,6 @@ class ProductsService {
    * @returns {Object}
    */
   async create (data, images) {
-    console.log(
-      '🚀 ~ file: product.service.js ~ line 17 ~ ProductsService ~ create ~ images',
-      images
-    )
     const newProduct = await models.Product.create(data)
     if (!newProduct) throw boom.badRequest('Error in create product')
     if (!images) return newProduct
