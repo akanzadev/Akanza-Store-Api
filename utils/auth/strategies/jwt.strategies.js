@@ -16,7 +16,7 @@ const JwtStrategy = new Strategy(options, async (payload, done) => {
     if (!user) done(boom.unauthorized(), false)
     done(null, user)
   } catch (error) {
-    done(error)
+    done(boom.unauthorized('Error in JwtStrategy' + error), false)
   }
 })
 

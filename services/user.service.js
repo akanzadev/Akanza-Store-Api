@@ -16,7 +16,10 @@ class UserService {
       password: hash
     })
     if (!newUser) throw boom.badRequest('Error in create User')
-    console.log('🚀 ~ file: user.service.js ~ line 19 ~ UserService ~ create ~ newUser', newUser)
+    console.log(
+      '🚀 ~ file: user.service.js ~ line 19 ~ UserService ~ create ~ newUser',
+      newUser
+    )
     delete newUser.dataValues.password
     return newUser
   }
@@ -29,14 +32,12 @@ class UserService {
     /* const [data, metadata] = await sequalize.query('SELECT * FROM tasks')
     if (!data.length === 0) throw boom.notFound('No users found')
     return data */
-    const users = await models.User.findAll(
-      {
-        include: ['customer'],
-        attributes: {
-          exclude: ['password']
-        }
+    const users = await models.User.findAll({
+      include: ['customer'],
+      attributes: {
+        exclude: ['password', 'recoveryToken']
       }
-    )
+    })
     if (!users.length === 0) throw boom.notFound('No users found')
     return users
   }
@@ -44,7 +45,7 @@ class UserService {
   async findOne (id) {
     const user = await models.User.findByPk(id, {
       attributes: {
-        exclude: ['password']
+        exclude: ['password', 'recoveryToken']
       }
     })
     if (!user) throw boom.notFound('User not found')
