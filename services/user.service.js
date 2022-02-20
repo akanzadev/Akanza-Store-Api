@@ -58,7 +58,7 @@ class UserService {
         email
       }
     })
-    if (!user) throw boom.notFound('Error in find User by email')
+    if (!user) throw boom.notFound('Not exist user with this email')
     return user
   }
 
@@ -76,6 +76,12 @@ class UserService {
       throw boom.badRequest('Error in delete User')
     })
     return id
+  }
+
+  async getUserWithRecoveryToken (id) {
+    const user = await models.User.findByPk(id)
+    if (!user) throw boom.notFound('User not found')
+    return user
   }
 }
 

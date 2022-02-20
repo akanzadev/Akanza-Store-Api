@@ -1,7 +1,7 @@
 const Joi = require('joi')
 
 const productId = Joi.number().integer()
-const productName = Joi.string().min(3).max(25)
+const productName = Joi.string().min(3).max(100)
 const productPrice = Joi.number().precision(2)
 const productDescription = Joi.string().min(10)
 // array de imagenes

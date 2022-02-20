@@ -63,9 +63,9 @@ router.get(
 // POST /api/v1/categories
 router.post(
   '/',
-  [
+  [/*
     passport.authenticate('jwt', { session: false }),
-    checkRoles('admin'),
+    checkRoles('admin'), */
     validationHandler(createCategorySchema, 'body')
   ],
   async (req, res, next) => {
