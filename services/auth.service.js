@@ -14,8 +14,11 @@ class AuthService {
     const user = await this.service.findByEmail(email).catch((e) => {
       throw boom.unauthorized('Invalid email or password')
     })
+    console.log(user)
     const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) throw boom.unauthorized('Invalid email or password')
+    if (!isMatch) {
+      throw boom.unauthorized('Invalid email or password')
+    }
     delete user.dataValues.password
     delete user.dataValues.recoveryToken
     return user
@@ -87,7 +90,9 @@ class AuthService {
   async changePassword (token, newPassword) {
     const payload = this.decodedJWT(token)
     const user = await this.service.getUserWithRecoveryToken(payload.sub)
-    if (user.recoveryToken !== token) throw boom.unauthorized('Invalid token in reset password')
+    if (user.recoveryToken !== token) {
+      throw boom.unauthorized('Invalid token in reset password')
+    }
     const hash = await bcrypt.hash(newPassword, 10)
     await this.service.update(user.id, { recoveryToken: null, password: hash })
     return { message: 'password changed' }

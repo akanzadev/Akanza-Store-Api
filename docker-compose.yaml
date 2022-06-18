@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   postgresql:
-    container_name: postgresql-container
+    container_name: postgresql-container-akanza-store
     image: postgres:13
     ports:
       - "5432:5432"
@@ -14,7 +14,7 @@ services:
       - ./postgres_data/postgres:/var/lib/postgresql/data
 
   pgadmin:
-    container_name: pgadmin-container
+    container_name: pgadmin-container-akanza-store
     image: dpage/pgadmin4
     ports:
       - "9090:80"
@@ -23,7 +23,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
 
   mysql:
-    container_name: mysqldb-container
+    container_name: mysqldb-container-akanza-store
     image: mysql:latest
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -39,7 +39,7 @@ services:
       - ./mysql_data:/var/lib/mysql
 
   phpmyadmin:
-    container_name: phpmyadmin-container
+    container_name: phpmyadmin-container-akanza-store
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_ARBITRARY: 1
