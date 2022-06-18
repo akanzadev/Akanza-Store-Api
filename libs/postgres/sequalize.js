@@ -19,7 +19,6 @@ if (config.DB.TYPE_DB === 'postgres') {
     }
     options.logging = false
   }
-
   const sequelize = new Sequelize(config.DB.POSTGRES.DB_URI, options)
   setupModels(sequelize)
 
